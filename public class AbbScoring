@@ -1,0 +1,48 @@
+import java.lang.String;
+import java.util.Arrays;
+
+public class AbbScoring {
+    public static void main(String[] args) {
+
+        String dataOfLoanPay = "00010100000000101"; //Данные о платежной дисциплине клиента (строковый тип)
+        //String dataOfLoanPay = "0010000123000100"; //Тестовый кейс №2
+        //String dataOfLoanPay = "00001000000000000"; // Тестовый кейс №3
+
+        int [] loanPayHistory =Arrays.stream(dataOfLoanPay.split(""))
+                .mapToInt(Integer::parseInt).toArray();
+        //Используем Stream API Java: разделяем строку на отдельные символы, преобразуем char в int
+
+        int loanPayCount1 = 0; // Счетчик просрочек оплаты от 1 до 30 дней;
+        int loanPayCount30 = 0; // Счетчик просрочек оплаты от 30 до 50 дней;
+        int loanPayCount50 = 0; // Счетчик просрочек оплаты 50 дней и более;
+
+        //Проверяем весь массив данных по платежной дисциплине и подсчитываем кол-во нарушений
+
+        for (int i = 0; i < loanPayHistory.length; i++) {
+            if (loanPayHistory[i] == 1) {
+                loanPayCount1++;
+            }
+            if (loanPayHistory[i] == 2) {
+                loanPayCount30++;
+            }
+            if (loanPayHistory[i] == 3) {
+                loanPayCount50++;
+            }
+        }
+
+        // Бизнес-правила категоризации клиентов
+            if ((loanPayCount1 <= 3) & (loanPayCount30 == 0) & (loanPayCount50 == 0)) {
+                System.out.println("Положительная кредитная история");
+            }
+
+            if ((loanPayCount30 > 1 && loanPayCount30 <=3) || (loanPayCount1 >= 4) & (loanPayCount50 == 0)) {
+                System.out.println("Сомнительная кредитная история");
+            }
+
+            if ((loanPayCount30 > 3) || (loanPayCount50 >= 1)) {
+                System.out.println("Отрицательная кредитная история");
+            }
+
+        }
+
+    }
